@@ -36,7 +36,7 @@ const schema = new Schema({
     maxLength: 20,
     select: false,
   },
-  firsName: {
+  firstName: {
     type: Schema.Types.String,
     required: true,
     trim: true,

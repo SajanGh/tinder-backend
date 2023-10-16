@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { ZodError, z } from "zod";
 import { Request, Response, NextFunction } from "express";
 
 export const validateRequestBody =
@@ -7,7 +7,8 @@ export const validateRequestBody =
       schema.parse(req.body);
       next();
     } catch (err) {
-      return res.status(422).send(err.message);
+      const error: ZodError = err as ZodError;
+      return res.status(422).send(error.message);
     }
   };
 
@@ -17,6 +18,7 @@ export const validateRequestParams =
       schema.parse(req.params);
       next();
     } catch (err) {
-      return res.status(422).send(err.message);
+      const error: ZodError = err as ZodError;
+      return res.status(422).send(error.message);
     }
   };
