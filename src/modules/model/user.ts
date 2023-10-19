@@ -33,7 +33,7 @@ const schema = new Schema({
   password: {
     type: Schema.Types.String,
     required: true,
-    maxLength: 20,
+    maxLength: 100,
     select: false,
   },
   firstName: {

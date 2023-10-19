@@ -1,28 +1,23 @@
 import { BadRequestError } from "../../core/ApiError";
 import { Request, Response } from "express";
 import UserRepo from "../../modules/repository/UserRepo";
-import { User } from "../../types/interface";
+import bcrypt from "bcrypt";
+import { InternalErrorResponse } from "../../core/ApiResponse";
 
 const SignUp = async (req: Request, res: Response) => {
   try {
-    const user = await UserRepo.findByEmail(req.body?.email);
+    const user = await UserRepo.findByEmail(req.body.email);
     if (user) {
-      throw new Error("User already registered");
+      throw new BadRequestError("User already registered");
     }
-    const CreateUser = await UserRepo.create(
-      //     {
-      //   username: req.body.username,
-      //   email: req.body.emai,
-      //   firstName: req.body.firstName,
-      //   lastName: req.body.lastName,
-      //   bio: req.body.bio,
-      //   dateOfBirth: req.body.dateOfBirth,
-      // }
-      req.body
-    );
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const CreateUser = await UserRepo.create({
+      ...req.body,
+      password: hashedPassword,
+    });
     return res.status(201).send(CreateUser);
   } catch (err) {
-    console.log(err);
+    return res.status(400).send(err);
   }
 };
 
