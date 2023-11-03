@@ -1,9 +1,11 @@
+import * as jwt from "jsonwebtoken";
+
 import { NextFunction, Request, Response } from "express";
-import { UserModel } from "../../modules/model/user";
+
 import UserRepo from "../../modules/repository/UserRepo";
 import { AuthFailureError, BadRequestError } from "../../core/ApiError";
 import bcrypt from "bcrypt";
-
+import { secret } from "../../config/config";
 const Login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const user = await UserRepo.findByEmail(req.body.email);
@@ -11,17 +13,23 @@ const Login = async (req: Request, res: Response, next: NextFunction) => {
     if (!user) {
       throw new BadRequestError("User not registered");
     }
-    if (!user.password) {
-      throw new BadRequestError("Credentials not set");
-    }
+
     const match = await bcrypt.compare(req.body.password, user.password);
     if (!match) {
-      throw new AuthFailureError("Authentication Failure");
+      throw new AuthFailureError(
+        "Authentication Failure, Password didn't match"
+      );
     }
-    res.status(200).json(user);
+    const accessToken = jwt.sign(user, secret);
+    return res.status(201).json({
+      status: "success",
+      message: "User Logged in",
+      data: { accessToken },
+      user,
+    });
   } catch (err) {
-    // throw new BadRequestError("Something went wrong");
     res.status(500).send(err);
+    throw new Error();
   }
 };
 

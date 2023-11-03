@@ -7,7 +7,9 @@ const User = z.object({
   password: z.string().min(8).max(100),
   username: z.string().min(3).max(20),
   bio: z.string().min(1).max(50).optional(),
-  dateOfBirth: z.string().datetime().optional(),
+  dateOfBirth: z.date().optional(),
 });
 
-export default User;
+const SignupValidation = { User };
+
+export default SignupValidation;

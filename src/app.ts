@@ -6,6 +6,7 @@ import bodyParser from "body-parser";
 import "./database/database";
 import { ApiError, InternalError, NotFoundError } from "./core/ApiError";
 import routesV1 from "./routes/v1/router";
+import { corsUrl } from "./config/config";
 
 const app = express();
 process.on("uncaughtException", (e) => {
@@ -13,8 +14,8 @@ process.on("uncaughtException", (e) => {
 });
 
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cors());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(cors({ origin: corsUrl, optionsSuccessStatus: 200 }));
 app.use(helmet());
 
 app.use("/v1", routesV1);

@@ -11,7 +11,7 @@ export default class UserRepo {
 
   public static findByEmail(email: string): Promise<User | null> {
     return UserModel.findOne({ email: email, status: true })
-      .select("email+password")
+      .select("email +password")
       .lean<User>()
       .exec();
   }

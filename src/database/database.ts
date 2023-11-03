@@ -12,7 +12,7 @@ if (dbURI) {
       console.log("Mongoose Connection Successfull!");
     })
     .catch((e) => {
-      console.log("Mongoos Connection Errror");
+      console.log("Mongoose Connection Errror");
       console.log(e);
     });
 
