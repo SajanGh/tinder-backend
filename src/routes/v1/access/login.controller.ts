@@ -4,6 +4,6 @@ import LoginService from "../../../controller/access/login.service";
 import Authentication from "../../../middleware/authentication";
 const router = express.Router();
 
-router.post("/basic", LoginService.Login);
+router.post("/basic", Authentication, LoginService.Login);
 
 export default router;
