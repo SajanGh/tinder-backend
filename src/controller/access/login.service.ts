@@ -20,7 +20,9 @@ const Login = async (req: Request, res: Response, next: NextFunction) => {
         "Authentication Failure, Password didn't match"
       );
     }
-    const accessToken = jwt.sign(user, secret);
+    const accessToken = jwt.sign(user, secret, {
+      expiresIn: "365d",
+    });
     return res.status(201).json({
       status: "success",
       message: "User Logged in",
