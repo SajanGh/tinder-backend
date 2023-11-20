@@ -1,8 +1,6 @@
-import { User } from "./../types/interface.d";
 import * as jwt from "jsonwebtoken";
 import { NextFunction, Request, Response } from "express";
 import { secret } from "../config/config";
-import { UserModel } from "../modules/model/user";
 
 const Authentication = async (
   req: Request,
@@ -20,7 +18,9 @@ const Authentication = async (
   try {
     const token = authHeader?.split(" ")[1];
     const verify = jwt.verify(token, secret);
+    // const user = verify;
     // req.user = user;
+
     next();
   } catch (err) {
     return res.status(401).json({ status: "fail", message: "Unauthorizated" });
