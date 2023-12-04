@@ -17,7 +17,7 @@ const Authentication = async (
 
   try {
     const token = authHeader?.split(" ")[1];
-    const verify = jwt.verify(token, secret);
+    jwt.verify(token, secret);
     // const user = verify;
     // req.user = user;
 
